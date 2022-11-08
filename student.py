@@ -9,7 +9,15 @@ class Student:
         self._start_date = date.today()
         self.end_date = date.today() + timedelta(days=365)
         self.naughty_list = False
+        self.dot = '.'
 
     @property
     def full_name(self):
         return f"{self._first_name} {self._last_name}"
+
+    def alert_santa(self):
+        self.naughty_list = True
+
+    @property
+    def email(self):
+        return f'{self._first_name}.{self._last_name}@email.com'.lower()
