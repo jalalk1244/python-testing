@@ -1,6 +1,7 @@
 import unittest
 from datetime import timedelta
 from student import Student
+from unittest.mock import patch
 
 
 class TestStudent(unittest.TestCase):
@@ -36,9 +37,24 @@ class TestStudent(unittest.TestCase):
 
         # My solution to the challenge
         # self.assertGreater(self.student.end_date, before_end_date)
-        # Videos solution to the challenge
+        # Video's solution to the challenge
         self.assertEqual(
             before_end_date + timedelta(days=10), self.student.end_date)
+
+    def test_course_schedule_success(self):
+        with patch('student.requests.get') as mocked_get:
+            mocked_get.return_value.ok = True
+            mocked_get.return_value.text = 'Success'
+
+            schedule = self.student.course_schedule()
+            self.assertEqual(schedule, 'Success')
+
+    def test_course_schedule_failed(self):
+        with patch('student.requests.get') as mocked_get:
+            mocked_get.return_value.ok = False
+
+            schedule = self.student.course_schedule()
+            self.assertEqual(schedule, 'Somthing went wrong with the request!')
 
 
 if __name__ == '__main__':
